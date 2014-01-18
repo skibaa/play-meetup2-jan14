@@ -12,13 +12,13 @@ object MyIteratees {
   
   def consume( prevData:Seq[Int] ):Iteratee[Int, Seq[Int]] = 
     fold( prevData ) { (prev, i) =>
-	  prev :+ i
-	}
+      prev :+ i
+    }
   
   val consumer = consume( Seq.empty )
   
   def sum( prevSum:Int ):Iteratee[Int, Int] = 
-  	fold ( prevSum ) { (prev, i) =>
+    fold ( prevSum ) { (prev, i) =>
       prev + i
     }
   
