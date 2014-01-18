@@ -1,26 +1,14 @@
 package workshop
 
 import play.api.libs.iteratee._
+import scala.concurrent.ExecutionContext.Implicits.global
 
 object MyIteratees {
   
-  def fold[A] ( start:A )( folder: Function2[A, Int, A]):Iteratee[Int, A] = Cont {
-    case Input.El( i ) => fold( folder(start, i) )( folder )
-    case Input.EOF => Done( start )
-    case Input.Empty => fold( start )( folder )
-  }
+  def foldInt[A](a: A) = Iteratee.fold[Int, A](a)_
   
-  def consume( prevData:Seq[Int] ):Iteratee[Int, Seq[Int]] = 
-    fold( prevData ) { (prev, i) =>
-      prev :+ i
-    }
+  val consumer = foldInt( Seq.empty[Int] )(_ :+ _)
   
-  val consumer = consume( Seq.empty )
+  val summer = foldInt( 0 )(_ + _)
   
-  def sum( prevSum:Int ):Iteratee[Int, Int] = 
-    fold ( prevSum ) { (prev, i) =>
-      prev + i
-    }
-  
-  val summer = sum( 0 )
 }
