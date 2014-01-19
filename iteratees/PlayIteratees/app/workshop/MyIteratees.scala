@@ -46,4 +46,5 @@ object MyIteratees {
     }
   }
   
+  def find3AfterLen4: Iteratee[Int, String] = ???
 }
