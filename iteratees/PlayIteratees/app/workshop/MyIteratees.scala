@@ -46,5 +46,10 @@ object MyIteratees {
     }
   }
   
-  def find3AfterLen4: Iteratee[Int, String] = ???
+  def find3AfterLen4: Iteratee[Int, String] = 
+    for {
+      _ <- findLen4
+      s <- find3
+    }
+      yield s
 }
