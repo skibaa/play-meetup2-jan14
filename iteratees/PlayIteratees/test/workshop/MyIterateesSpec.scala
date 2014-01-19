@@ -16,7 +16,7 @@ import play.api.libs.iteratee._
 @RunWith(classOf[JUnitRunner])
 class MyIterateesSpec extends Specification {
   
-  val e = Enumerator[Int] (1, 2, 31, 4567, 4)
+  val e = Enumerator[Int] (1, 2, 31, 1567, 4)
   
   def feedAndGet[A] (it:Iteratee[Int, A]):A = {
     import scala.concurrent.Await
@@ -33,7 +33,7 @@ class MyIterateesSpec extends Specification {
     }
 
     "find first string in DB for which second query returns 4" in {
-      feedAndGet(MyIteratees.findLen4) must_== "4567"
+      feedAndGet(MyIteratees.findLen4) must_== "1567"
     }
   }
 }
