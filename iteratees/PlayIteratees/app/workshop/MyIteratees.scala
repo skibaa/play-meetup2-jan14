@@ -10,6 +10,10 @@ object MyIteratees {
     Future.successful(i.toString)
   }
   
+  def secondQuery(s:String): Future[Int] = {
+    Future.successful(s.length)
+  }
+  
   //find first string in DB which starts from 3
   def find3: Iteratee[Int, String] = {
     
@@ -33,6 +37,22 @@ object MyIteratees {
         
         futureString flatMap stringToFutureB
       }
+    }
+    
+    Cont(step)
+  }
+  
+   //find first string in DB which causes second query to return 4
+  def findLen4: Iteratee[Int, String] = {
+    
+    def step: Input[Int] => Iteratee[Int, String] = {
+      case Input.Empty => findLen4
+      case Input.EOF => Done("")
+      case Input.El(i) => FindLen4Iteratee(i)
+    }
+    
+    case class FindLen4Iteratee(prevInput:Int) extends Iteratee[Int, String] {
+      def fold[B](folder: Step[Int, String] => Future[B])(implicit ec: ExecutionContext): Future[B] = ???
     }
     
     Cont(step)
