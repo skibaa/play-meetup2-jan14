@@ -28,7 +28,7 @@ class MyIterateesSpec extends Specification {
 
   "MyIteratees" should {
 
-    "group input by sequences until zero" in {
+    "find first string in DB starting from 3" in {
       feedAndGet(MyIteratees.find3) must_== "31"
     }
 
