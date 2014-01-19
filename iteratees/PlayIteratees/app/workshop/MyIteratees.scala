@@ -25,7 +25,10 @@ object MyIteratees {
       
       def fold[B](folder: Step[Int, String] => Future[B])(implicit ec: ExecutionContext): Future[B] = { 
         def stringToFutureB (stringFromDb:C): Future[B] = folder {
-          Step.Error("Not implemented", Input.Empty)
+          if (stringFromDb.startsWith("3"))
+            Step.Done(stringFromDb, Input.Empty)
+          else
+            Step.Cont(step)
         }
         
         futureString flatMap stringToFutureB
