@@ -16,7 +16,7 @@ import play.api.libs.iteratee._
 @RunWith(classOf[JUnitRunner])
 class MyIterateesSpec extends Specification {
   
-  val e = Enumerator[Int] (1, 2, 3, 0, 4, 5, 0, 6)
+  val e = Enumerator[Int] (1, 2, 31, 0, 4)
   
   def feedAndGet[A] (it:Iteratee[Int, A]):A = {
     import scala.concurrent.Await
@@ -29,11 +29,7 @@ class MyIterateesSpec extends Specification {
   "MyIteratees" should {
 
     "group input by sequences until zero" in {
-      feedAndGet(MyIteratees.consumeUntilZero) must_== Seq(
-        Seq(1, 2, 3),
-        Seq(4, 5),
-        Seq(6)
-      )
+      feedAndGet(MyIteratees.find3) must_== "31"
     }
 
   }
