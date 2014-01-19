@@ -52,7 +52,21 @@ object MyIteratees {
     }
     
     case class FindLen4Iteratee(prevInput:Int) extends Iteratee[Int, String] {
-      def fold[B](folder: Step[Int, String] => Future[B])(implicit ec: ExecutionContext): Future[B] = ???
+      def fold[B](folder: Step[Int, String] => Future[B])(implicit ec: ExecutionContext): Future[B] = {
+        def res2futureB(firstRes:String, secondRes:Int): Future[B] = folder {
+          if (secondRes == 4)
+            Step.Done(firstRes, Input.Empty)
+          else
+            Step.Cont(step)
+        }
+        
+        for {
+          firstRes <- queryFromDb(prevInput)
+          secondRes <- secondQuery(firstRes)
+          b <- res2futureB(firstRes, secondRes)
+        }
+          yield b
+      }
     }
     
     Cont(step)
