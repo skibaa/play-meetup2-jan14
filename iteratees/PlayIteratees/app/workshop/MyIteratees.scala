@@ -15,7 +15,6 @@ object MyIteratees {
   }
   
   //find first string in DB which starts from 3
-
   def find3: Iteratee[Int, String] = Cont {
     case Input.Empty => find3
     case Input.EOF => Done("")
@@ -30,7 +29,21 @@ object MyIteratees {
         find3
     }
   
-   //find first string in DB which causes second query to return 4
-  def findLen4: Iteratee[Int, String] = ???
+  //find first string in DB which causes second query to return 4
+  def findLen4: Iteratee[Int, String] = Cont {
+    case Input.Empty => find3
+    case Input.EOF => Done("")
+    case Input.El(i) => Iteratee.flatten {
+      for {
+        s <- queryFromDb(i)
+        l <- secondQuery(s)
+      } yield {
+        if (l==4)
+          Done(s)
+        else
+          findLen4
+      }
+    }
+  }
   
 }
