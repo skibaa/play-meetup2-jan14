@@ -1,26 +1,25 @@
 package workshop
 
 import play.api.libs.iteratee._
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent._
 
 object MyIteratees {
   
-  def fold[A] ( start:A )( folder: Function2[A, Int, A]):Iteratee[Int, A] = Cont {
-    case Input.El( i ) => fold( folder(start, i) )( folder )
-    case Input.EOF => Done( start )
-    case Input.Empty => fold( start )( folder )
+  def queryFromDb(i: Int): Future[String] = {
+    Future.successful(i.toString)
   }
   
-  def consume( prevData:Seq[Int] ):Iteratee[Int, Seq[Int]] = 
-    fold( prevData ) { (prev, i) =>
-      prev :+ i
+  //find first string in DB which starts from 3
+  def find3: Iteratee[Int, String] = Cont {
+    ???
+  }
+  
+  private def i2iter(i: Int): Future[Iteratee[Int,String]] = 
+    queryFromDb(i) map { s =>
+      if (s.startsWith("3"))
+        ???
+      else
+        ???
     }
-  
-  val consumer = consume( Seq.empty )
-  
-  def sum( prevSum:Int ):Iteratee[Int, Int] = 
-    fold ( prevSum ) { (prev, i) =>
-      prev + i
-    }
-  
-  val summer = sum( 0 )
 }

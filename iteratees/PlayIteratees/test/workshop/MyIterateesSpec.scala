@@ -16,7 +16,7 @@ import play.api.libs.iteratee._
 @RunWith(classOf[JUnitRunner])
 class MyIterateesSpec extends Specification {
   
-  val e = Enumerator[Int] (1, 2, 3)
+  val e = Enumerator[Int] (1, 2, 31, 0, 4)
   
   def feedAndGet[A] (it:Iteratee[Int, A]):A = {
     import scala.concurrent.Await
@@ -28,12 +28,8 @@ class MyIterateesSpec extends Specification {
 
   "MyIteratees" should {
 
-    "accumulate input with consumer" in {
-      feedAndGet(MyIteratees.consumer) must_== Seq(1, 2, 3)
-    }
-    
-    "sum input with summer" in {
-      feedAndGet(MyIteratees.summer) must_== 6
+    "find first string in DB starting from 3" in {
+      feedAndGet(MyIteratees.find3) must_== "31"
     }
 
   }
