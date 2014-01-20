@@ -10,6 +10,10 @@ object MyIteratees {
     Future.successful(i.toString)
   }
   
+  def secondQuery(s:String): Future[Int] = {
+    Future.successful(s.length)
+  }
+  
   //find first string in DB which starts from 3
 
   def find3: Iteratee[Int, String] = Cont {
@@ -25,4 +29,8 @@ object MyIteratees {
       else
         find3
     }
+  
+   //find first string in DB which causes second query to return 4
+  def findLen4: Iteratee[Int, String] = ???
+  
 }
